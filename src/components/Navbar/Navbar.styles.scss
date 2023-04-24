@@ -1,0 +1,29 @@
+.navbar-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 44px;
+  gap: 10px;
+
+  background: #1e3d59;
+  box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.3);
+  color: #fff;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  img {
+    width: 40px;
+    height: auto;
+    object-fit: contain;
+  }
+}
+
+.navbar-right {
+  display: flex;
+  gap: 32px;
+}
