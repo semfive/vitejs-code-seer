@@ -11,32 +11,45 @@ import { Layout } from '../components';
 import { useLazyComponent } from '../hooks/useLazyComponent';
 import Sidebar from '../components/Sidebar/Sidebar';
 
-const ContactPage = useLazyComponent('../pages/Contact/Contact');
-const PricingPage = useLazyComponent('../pages/Pricing/Pricing');
-const LoginPage = useLazyComponent('../pages/Login/Login');
-const OrganizationsPage = useLazyComponent(
-  '../pages/Organizations/Organizations'
+const ContactPage = React.lazy(() => import('../pages/Contact/Contact'));
+const PricingPage = React.lazy(() => import('../pages/Pricing/Pricing'));
+const LoginPage = React.lazy(() => import('../pages/Login/Login'));
+const OrganizationsPage = React.lazy(
+  () => import('../pages/Organizations/Organizations')
 );
-const OrganizationDetailPage = useLazyComponent(
-  '../pages/OrganizationDetail/OrganizationDetail'
+const OrganizationDetailPage = React.lazy(
+  () => import('../pages/OrganizationDetail/OrganizationDetail')
 );
-const TeamDetail = useLazyComponent('../pages/TeamDetail/TeamDetail.tsx');
+const TeamDetail = React.lazy(() => import('../pages/TeamDetail/TeamDetail'));
+
+const SuspendComponent = ({ component }: any) => (
+  <React.Suspense fallback={<h1>Loading...</h1>}>{component}</React.Suspense>
+);
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path='/' element={<PublicRouter />}>
         <Route index element={<WelcomePage />} />
-        <Route path='contact' element={<ContactPage />} />
-        <Route path='pricing' element={<PricingPage />} />
-        <Route path='login' element={<LoginPage />} />
+        <Route
+          path='contact'
+          element={<SuspendComponent component={<ContactPage />} />}
+        />
+        <Route
+          path='pricing'
+          element={<SuspendComponent component={<PricingPage />} />}
+        />
+        <Route
+          path='login'
+          element={<SuspendComponent component={<LoginPage />} />}
+        />
       </Route>
       <Route path='/organizations' element={<PrivateRouter />}>
         <Route
           index
           element={
             <Layout>
-              <OrganizationsPage />
+              <SuspendComponent component={<OrganizationsPage />} />
             </Layout>
           }
         />
@@ -44,7 +57,7 @@ export const router = createBrowserRouter(
           path=':organizationId'
           element={
             <Layout sidebar={<Sidebar />}>
-              <OrganizationDetailPage />
+              <SuspendComponent component={<OrganizationDetailPage />} />
             </Layout>
           }
         />
@@ -52,7 +65,7 @@ export const router = createBrowserRouter(
           path=':organizationId/teams/:teamId'
           element={
             <Layout sidebar={<Sidebar />}>
-              <TeamDetail />
+              <SuspendComponent component={<TeamDetail />} />
             </Layout>
           }
         />

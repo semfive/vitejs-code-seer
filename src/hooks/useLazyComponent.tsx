@@ -1,7 +1,9 @@
 import React from 'react';
 
 export const useLazyComponent = (componentPath: string) => {
-  const LazyComponent = React.lazy(() => import(`${componentPath}`));
+  const LazyComponent = React.lazy(
+    () => import(`../components/${componentPath}.js`)
+  );
 
   function ComponentWithSuspense(props: any) {
     return (
